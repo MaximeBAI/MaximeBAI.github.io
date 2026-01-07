@@ -1,3 +1,20 @@
 theme: jekyll-theme-minimal
 title: Agentforce Demo Site
 description: This is a description of the demo site.
+
+# --- Agentforce demo configuration ---
+# Paste your public Agentforce deployment URL here.
+# If your deployment supports embedding, you can set `agentforce_iframe_url` too.
+agentforce_url: ""
+agentforce_iframe_url: ""
+
+# --- Salesforce Embedded Messaging (Agentforce) ---
+# Paste the values from your Embedded Messaging snippet here.
+embedded_messaging:
+  enabled: true
+  language: en_US
+  org_id: "00DDT000000Xzto"
+  deployment_name: "Airlight_Pro_Agentforce"
+  site_url: "https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067"
+  scrt2_url: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com"
+  bootstrap_url: "https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
