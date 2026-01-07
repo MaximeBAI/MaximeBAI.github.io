@@ -29,6 +29,7 @@
       <p><a href="./">← Home</a></p>
       <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
       <p>The chat bubble should appear in the bottom corner after the page loads.</p>
+      <p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
       <p style="font-size: 12px; color: #555;">
         If you don’t see it, Salesforce usually needs your domain allowlisted (for GitHub Pages, that’s your site origin like
         <code>https://&lt;username&gt;.github.io</code>).
@@ -36,8 +37,18 @@
     </main>
 
     <script type="text/javascript">
+      function setStatus(msg) {
+        var el = document.getElementById("em-status");
+        if (el) el.textContent = "Embedded Messaging status: " + msg;
+      }
+
       function initEmbeddedMessaging() {
         try {
+          if (typeof embeddedservice_bootstrap === "undefined") {
+            setStatus("bootstrap script loaded, but embeddedservice_bootstrap is missing.");
+            return;
+          }
+
           embeddedservice_bootstrap.settings.language = "en_US";
           embeddedservice_bootstrap.init(
             "00DDT000000Xzto",
@@ -47,7 +58,9 @@
               scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
             }
           );
+          setStatus("initialized (if bubble doesn’t show, check Salesforce allowlist / deployment status).");
         } catch (err) {
+          setStatus("init error — open DevTools Console for details.");
           console.error("Error loading Embedded Messaging: ", err);
         }
       }
@@ -55,7 +68,8 @@
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
-      onload="initEmbeddedMessaging()"
+      onload="setStatus('bootstrap loaded, initializing…'); initEmbeddedMessaging()"
+      onerror="setStatus('failed to load bootstrap.min.js (check network/CSP).')"
     ></script>
   </body>
 </html>
