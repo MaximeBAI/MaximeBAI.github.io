@@ -1,23 +1,20 @@
-# Agentforce Demo Site (GitHub Pages)
+# Agentforce Demo Website (GitHub Pages)
 
-This repo is a simple **GitHub Pages** site with:
-- a homepage (`/`)
-- an **Agentforce** page (`/agentforce`)
+This repo is a **static** GitHub Pages site (no Jekyll theme).
 
-## Configure your Agentforce deployment URL
-
-Edit `_config.yml`:
-
-- `agentforce_url`: used for a direct link
-- `agentforce_iframe_url`: used to embed in an iframe (optional)
-
-If the embed doesn’t work, it usually means the deployment blocks iframes via `X-Frame-Options` / CSP. In that case, keep only `agentforce_url`.
+- Homepage: `index.html`
+- Agentforce page (Embedded Messaging): `agentforce.html`
 
 ## GitHub Pages settings
 
 In your repo: **Settings → Pages**
 
 - **Source**: Deploy from a branch
-- **Branch**: `main` / `root`
+- **Branch**: `main` / `(root)`
 
-Then wait ~1–3 minutes and open your site.
+## If the chat bubble doesn’t show
+
+Salesforce Embedded Messaging typically requires your website domain to be allowlisted in Salesforce setup.
+
+For GitHub Pages user sites, your origin is usually:
+- `https://<username>.github.io`

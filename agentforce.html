@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <title>Agentforce</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: #111;
+        background: #fff;
+      }
+      main {
+        max-width: 800px;
+        padding: 48px 20px;
+        margin: 0 auto;
+      }
+      a {
+        color: inherit;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="./">← Home</a></p>
+      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
+      <p>The chat bubble should appear in the bottom corner after the page loads.</p>
+      <p style="font-size: 12px; color: #555;">
+        If you don’t see it, Salesforce usually needs your domain allowlisted (for GitHub Pages, that’s your site origin like
+        <code>https://&lt;username&gt;.github.io</code>).
+      </p>
+    </main>
+
+    <script type="text/javascript">
+      function initEmbeddedMessaging() {
+        try {
+          embeddedservice_bootstrap.settings.language = "en_US";
+          embeddedservice_bootstrap.init(
+            "00DDT000000Xzto",
+            "Airlight_Pro_Agentforce",
+            "https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067",
+            {
+              scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
+            }
+          );
+        } catch (err) {
+          console.error("Error loading Embedded Messaging: ", err);
+        }
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
+      onload="initEmbeddedMessaging()"
+    ></script>
+  </body>
+</html>
+
+
