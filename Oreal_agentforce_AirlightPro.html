@@ -12,10 +12,10 @@
         background: #fff;
       }
       main {
-        max-width: 800px;
-        padding: 48px 20px;
-        margin: 0 auto;
-      }
+		  max-width: 800px;
+		  padding: 80px 20px 48px 20px; /* Increased top padding from 48px to 80px */
+		  margin: 0 auto;
+		}
       a {
         color: inherit;
       }
@@ -25,42 +25,66 @@
     </style>
   </head>
   <body>
-    <main>
-      <p><a href="./">← Home</a></p>
-      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
-      <p>The chat bubble should appear in the bottom corner after the page loads.</p>
-      <p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
-    </main>
+	<main>
+		<div style="position: absolute; top: 20px; right: 20px;">
+			<label for="lang-select" style="font-size: 14px;">Language:</label>
+			<select id="lang-select" onchange="changeLanguage(this.value)">
+				<option value="en_US">English</option>
+				<option value="fr_FR">Français</option>
+			</select>
+		</div>
 
-    <script type="text/javascript">
-      function setStatus(msg) {
-        var el = document.getElementById("em-status");
-        if (el) el.textContent = "Embedded Messaging status: " + msg;
-      }
+		<p><a href="./">← Home</a></p>
+		<h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
+		<p>The chat bubble should appear in the bottom corner after the page loads.</p>
+		<p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
+	</main>
 
-      function initEmbeddedMessaging() {
-        try {
-          if (typeof embeddedservice_bootstrap === "undefined") {
-            setStatus("bootstrap script loaded, but embeddedservice_bootstrap is missing.");
-            return;
-          }
+	<script type="text/javascript">
+		function setStatus(msg) {
+			var el = document.getElementById("em-status");
+			if (el) el.textContent = "Embedded Messaging status: " + msg;
+		}
 
-          embeddedservice_bootstrap.settings.language = "en_US";
-          embeddedservice_bootstrap.init(
-            "00DDT000000Xzto",
-            "Airlight_Pro_Agentforce",
-            "https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067",
-            {
-              scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
-            }
-          );
-          setStatus("initialized.");
-        } catch (err) {
-          setStatus("init error — open DevTools Console for details.");
-          console.error("Error loading Embedded Messaging: ", err);
-        }
-      }
-    </script>
+		// New function to handle the dropdown change
+		function changeLanguage(lang) {
+			setStatus("Switching language to " + lang + "...");
+			
+			// Optional: Clear the session so the chat actually resets to the new language
+			// Otherwise, an existing conversation might stay in the old language.
+			localStorage.removeItem("embeddedservice_bootstrap_settings"); 
+			
+			initEmbeddedMessaging(lang);
+		}
+
+		function initEmbeddedMessaging(lang) {
+			// Use provided lang or default to English
+			var selectedLang = lang || "en_US";
+
+			try {
+				if (typeof embeddedservice_bootstrap === "undefined") {
+					setStatus("bootstrap script missing.");
+					return;
+				}
+
+				// Important: This clears any existing chat instance before re-initializing
+				embeddedservice_bootstrap.settings.language = selectedLang;
+				
+				embeddedservice_bootstrap.init(
+					"00DDT000000Xzto",
+					"Airlight_Pro_Agentforce",
+					"https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067",
+					{
+						scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
+					}
+				);
+				setStatus("initialized in " + selectedLang);
+			} catch (err) {
+				setStatus("init error — see console.");
+				console.error("Error loading Embedded Messaging: ", err);
+			}
+		}
+	</script>
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
@@ -69,7 +93,3 @@
     ></script>
   </body>
 </html>
-
-
-
-
