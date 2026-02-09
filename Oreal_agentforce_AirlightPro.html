@@ -47,14 +47,28 @@
 		}
 
 		// New function to handle the dropdown change
-		function changeLanguage(lang) {
-			setStatus("Switching language to " + lang + "...");
-			
-			// Optional: Clear the session so the chat actually resets to the new language
-			// Otherwise, an existing conversation might stay in the old language.
-			localStorage.removeItem("embeddedservice_bootstrap_settings"); 
-			
-			initEmbeddedMessaging(lang);
+		async function changeLanguage(lang) {
+		    setStatus("Switching language to " + lang + "...");
+		    
+		    try {
+		        // 1. Clear the current session and UI
+		        // This is the official way to destroy the existing chat instance
+		        await embeddedservice_bootstrap.clear(); 
+		        
+		        // 2. Clear local storage as a backup to ensure fresh state
+		        localStorage.removeItem("embeddedservice_bootstrap_settings"); 
+		
+		        // 3. Re-initialize with the new language
+		        initEmbeddedMessaging(lang);
+		        
+		        // 4. Optional: Auto-launch the chat after switching so the user sees the change
+		        // embeddedservice_bootstrap.launch(); 
+		        
+		    } catch (err) {
+		        console.error("Error during language switch:", err);
+		        // Fallback: If clear fails, force a page refresh with a URL parameter
+		        // window.location.search = "lang=" + lang; 
+		    }
 		}
 
 		function initEmbeddedMessaging(lang) {
@@ -93,3 +107,4 @@
     ></script>
   </body>
 </html>
+
