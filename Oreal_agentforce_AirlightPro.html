@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-    <title>Agentforce</title>
+    <title>Agentforce (FR)</title>
     <style>
       body {
         margin: 0;
@@ -27,47 +27,48 @@
   <body>
     <main>
       <div style="position: absolute; top: 20px; right: 20px;">
-        <label for="lang-select" style="font-size: 14px;">Language:</label>
+        <label for="lang-select" style="font-size: 14px;">Langue :</label>
         <select id="lang-select" onchange="changeLanguage(this.value)">
+          <option value="fr" selected>Français</option>
           <option value="en_US">English</option>
-          <option value="fr">Français</option>
         </select>
       </div>
 
-      <p><a href="./">← Home</a></p>
-      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
-      <p>The chat bubble should appear in the bottom corner after the page loads.</p>
-      <p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
+      <p><a href="./">← Accueil</a></p>
+      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce (Français)</h1>
+      <p>La bulle de chat devrait apparaître en bas à droite.</p>
+      <p id="em-status" style="font-size: 12px; color: #555;">Statut : chargement…</p>
     </main>
 
     <script type="text/javascript">
       function setStatus(msg) {
         var el = document.getElementById("em-status");
-        if (el) el.textContent = "Embedded Messaging status: " + msg;
+        if (el) el.textContent = "Statut : " + msg;
       }
 
       function changeLanguage(lang) {
-        setStatus("Switching language to " + lang + "...");
+        // Refresh page with new language param
         const url = new URL(window.location);
         url.searchParams.set('lang', lang);
         window.location.href = url.href; 
       }
 
       function initEmbeddedMessaging() {
+        // 1. Check URL for lang, but DEFAULT TO 'fr' if empty
         const urlParams = new URLSearchParams(window.location.search);
-        // Default to en_US if no param is found
-        const selectedLang = urlParams.get('lang') || "en_US"; 
+        const selectedLang = urlParams.get('lang') || "fr"; 
 
+        // 2. Sync dropdown
         const langSelect = document.getElementById("lang-select");
         if (langSelect) langSelect.value = selectedLang;
 
         try {
           if (typeof embeddedservice_bootstrap === "undefined") {
-            setStatus("bootstrap script missing.");
+            setStatus("Script manquant (bootstrap undefined).");
             return;
           }
 
-          // Clear cache to ensure fresh language load
+          // 3. Force clean session
           localStorage.removeItem("embeddedservice_bootstrap_settings");
           
           embeddedservice_bootstrap.settings.language = selectedLang;
@@ -80,18 +81,19 @@
               scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
             }
           );
-          setStatus("initialized in " + selectedLang);
+          setStatus("Initialisé en " + selectedLang);
         } catch (err) {
-          setStatus("init error — see console.");
+          setStatus("Erreur d'initialisation (voir console).");
           console.error("Error loading Embedded Messaging: ", err);
         }
       }
     </script>
+    
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
-      onload="setStatus('bootstrap loaded, initializing…'); initEmbeddedMessaging()"
-      onerror="setStatus('failed to load bootstrap.min.js (check network/CSP).')"
+      onload="setStatus('Bootstrap chargé, initialisation…'); initEmbeddedMessaging()"
+      onerror="setStatus('Erreur chargement bootstrap.min.js')"
     ></script>
   </body>
 </html>
