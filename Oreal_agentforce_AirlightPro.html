@@ -12,10 +12,10 @@
         background: #fff;
       }
       main {
-		  max-width: 800px;
-		  padding: 80px 20px 48px 20px; /* Increased top padding from 48px to 80px */
-		  margin: 0 auto;
-		}
+        max-width: 800px;
+        padding: 80px 20px 48px 20px; /* Top padding increased for the language selector */
+        margin: 0 auto;
+      }
       a {
         color: inherit;
       }
@@ -25,80 +25,73 @@
     </style>
   </head>
   <body>
-	<main>
-		<div style="position: absolute; top: 20px; right: 20px;">
-			<label for="lang-select" style="font-size: 14px;">Language:</label>
-			<select id="lang-select" onchange="changeLanguage(this.value)">
-				<option value="en_US">English</option>
-				<option value="fr_FR">Français</option>
-			</select>
-		</div>
+    <main>
+      <div style="position: absolute; top: 20px; right: 20px;">
+        <label for="lang-select" style="font-size: 14px;">Language:</label>
+        <select id="lang-select" onchange="changeLanguage(this.value)">
+          <option value="en_US">English</option>
+          <option value="fr_FR">Français</option>
+        </select>
+      </div>
 
-		<p><a href="./">← Home</a></p>
-		<h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
-		<p>The chat bubble should appear in the bottom corner after the page loads.</p>
-		<p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
-	</main>
+      <p><a href="./">← Home</a></p>
+      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
+      <p>The chat bubble should appear in the bottom corner after the page loads.</p>
+      <p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
+    </main>
 
-	<script type="text/javascript">
-		function setStatus(msg) {
-			var el = document.getElementById("em-status");
-			if (el) el.textContent = "Embedded Messaging status: " + msg;
-		}
+    <script type="text/javascript">
+      function setStatus(msg) {
+        var el = document.getElementById("em-status");
+        if (el) el.textContent = "Embedded Messaging status: " + msg;
+      }
 
-		// New function to handle the dropdown change
-		async function changeLanguage(lang) {
-		    setStatus("Switching language to " + lang + "...");
-		    
-		    try {
-		        // 1. Clear the current session and UI
-		        // This is the official way to destroy the existing chat instance
-		        await embeddedservice_bootstrap.clear(); 
-		        
-		        // 2. Clear local storage as a backup to ensure fresh state
-		        localStorage.removeItem("embeddedservice_bootstrap_settings"); 
-		
-		        // 3. Re-initialize with the new language
-		        initEmbeddedMessaging(lang);
-		        
-		        // 4. Optional: Auto-launch the chat after switching so the user sees the change
-		        // embeddedservice_bootstrap.launch(); 
-		        
-		    } catch (err) {
-		        console.error("Error during language switch:", err);
-		        // Fallback: If clear fails, force a page refresh with a URL parameter
-		        // window.location.search = "lang=" + lang; 
-		    }
-		}
+      // 1. When the user changes the dropdown, reload the page with ?lang=XX
+      // This ensures a clean session start for the new language.
+      function changeLanguage(lang) {
+        setStatus("Switching language to " + lang + "...");
+        const url = new URL(window.location);
+        url.searchParams.set('lang', lang);
+        window.location.href = url.href; 
+      }
 
-		function initEmbeddedMessaging(lang) {
-			// Use provided lang or default to English
-			var selectedLang = lang || "en_US";
+      function initEmbeddedMessaging() {
+        // 2. Read the language from the URL parameter (default to en_US)
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedLang = urlParams.get('lang') || "en_US"; 
 
-			try {
-				if (typeof embeddedservice_bootstrap === "undefined") {
-					setStatus("bootstrap script missing.");
-					return;
-				}
+        // 3. Ensure the dropdown visually matches the active language
+        const langSelect = document.getElementById("lang-select");
+        if (langSelect) langSelect.value = selectedLang;
 
-				// Important: This clears any existing chat instance before re-initializing
-				embeddedservice_bootstrap.settings.language = selectedLang;
-				
-				embeddedservice_bootstrap.init(
-					"00DDT000000Xzto",
-					"Airlight_Pro_Agentforce",
-					"https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067",
-					{
-						scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
-					}
-				);
-				setStatus("initialized in " + selectedLang);
-			} catch (err) {
-				setStatus("init error — see console.");
-				console.error("Error loading Embedded Messaging: ", err);
-			}
-		}
-	</script>
+        try {
+          if (typeof embeddedservice_bootstrap === "undefined") {
+            setStatus("bootstrap script missing.");
+            return;
+          }
+
+          // 4. Critical: Clear cached settings to prevent 'stickiness' of the old language
+          localStorage.removeItem("embeddedservice_bootstrap_settings");
+          
+          // 5. Apply the language setting
+          embeddedservice_bootstrap.settings.language = selectedLang;
+          
+          embeddedservice_bootstrap.init(
+            "00DDT000000Xzto",
+            "Airlight_Pro_Agentforce",
+            "https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067",
+            {
+              scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
+            }
+          );
+          setStatus("initialized in " + selectedLang);
+        } catch (err) {
+          setStatus("init error — see console.");
+          console.error("Error loading Embedded Messaging: ", err);
+        }
+      }
+    </script>
+    
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
@@ -107,4 +100,3 @@
     ></script>
   </body>
 </html>
-
