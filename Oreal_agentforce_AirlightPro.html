@@ -29,14 +29,14 @@
       <div style="position: absolute; top: 20px; right: 20px;">
         <label for="lang-select" style="font-size: 14px;">Langue :</label>
         <select id="lang-select" onchange="changeLanguage(this.value)">
-          <option value="fr" selected>Français</option>
+          <option value="fr">Français</option>
           <option value="en_US">English</option>
         </select>
       </div>
 
       <p><a href="./">← Accueil</a></p>
-      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce (Français)</h1>
-      <p>La bulle de chat devrait apparaître en bas à droite.</p>
+      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce (Démo)</h1>
+      <p>La bulle de chat s'affichera en bas à droite une fois chargée.</p>
       <p id="em-status" style="font-size: 12px; color: #555;">Statut : chargement…</p>
     </main>
 
@@ -46,31 +46,41 @@
         if (el) el.textContent = "Statut : " + msg;
       }
 
+      // --- HARD REFRESH LOGIC ---
       function changeLanguage(lang) {
-        // Refresh page with new language param
+        setStatus("Changement de langue vers " + lang + "...");
+        
+        // 1. Clear storage to prevent "sticky" sessions
+        localStorage.removeItem("embeddedservice_bootstrap_settings");
+        sessionStorage.removeItem("embeddedservice_bootstrap_settings");
+
+        // 2. Build the new URL
         const url = new URL(window.location);
         url.searchParams.set('lang', lang);
+        
+        // 3. Force the browser to reload the page with the new URL
         window.location.href = url.href; 
       }
 
       function initEmbeddedMessaging() {
-        // 1. Check URL for lang, but DEFAULT TO 'fr' if empty
+        // 1. Get lang from URL, OR default to 'fr' if missing
         const urlParams = new URLSearchParams(window.location.search);
         const selectedLang = urlParams.get('lang') || "fr"; 
 
-        // 2. Sync dropdown
+        // 2. Sync the dropdown UI to match
         const langSelect = document.getElementById("lang-select");
         if (langSelect) langSelect.value = selectedLang;
 
         try {
           if (typeof embeddedservice_bootstrap === "undefined") {
-            setStatus("Script manquant (bootstrap undefined).");
+            setStatus("Erreur: Le script Bootstrap n'est pas chargé.");
             return;
           }
 
-          // 3. Force clean session
+          // 3. Clean any residual settings one last time
           localStorage.removeItem("embeddedservice_bootstrap_settings");
           
+          // 4. Apply Language Setting
           embeddedservice_bootstrap.settings.language = selectedLang;
           
           embeddedservice_bootstrap.init(
@@ -81,7 +91,7 @@
               scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
             }
           );
-          setStatus("Initialisé en " + selectedLang);
+          setStatus("Initialisé en : " + selectedLang);
         } catch (err) {
           setStatus("Erreur d'initialisation (voir console).");
           console.error("Error loading Embedded Messaging: ", err);
@@ -93,7 +103,7 @@
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
       onload="setStatus('Bootstrap chargé, initialisation…'); initEmbeddedMessaging()"
-      onerror="setStatus('Erreur chargement bootstrap.min.js')"
+      onerror="setStatus('Échec du chargement du script Salesforce.')"
     ></script>
   </body>
 </html>
