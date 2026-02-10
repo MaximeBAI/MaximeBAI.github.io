@@ -13,7 +13,7 @@
       }
       main {
         max-width: 800px;
-        padding: 80px 20px 48px 20px; /* Top padding increased for the language selector */
+        padding: 80px 20px 48px 20px;
         margin: 0 auto;
       }
       a {
@@ -30,7 +30,7 @@
         <label for="lang-select" style="font-size: 14px;">Language:</label>
         <select id="lang-select" onchange="changeLanguage(this.value)">
           <option value="en_US">English</option>
-          <option value="fr_FR">Français</option>
+          <option value="fr">Français</option>
         </select>
       </div>
 
@@ -46,8 +46,6 @@
         if (el) el.textContent = "Embedded Messaging status: " + msg;
       }
 
-      // 1. When the user changes the dropdown, reload the page with ?lang=XX
-      // This ensures a clean session start for the new language.
       function changeLanguage(lang) {
         setStatus("Switching language to " + lang + "...");
         const url = new URL(window.location);
@@ -56,11 +54,10 @@
       }
 
       function initEmbeddedMessaging() {
-        // 2. Read the language from the URL parameter (default to en_US)
         const urlParams = new URLSearchParams(window.location.search);
+        // Default to en_US if no param is found
         const selectedLang = urlParams.get('lang') || "en_US"; 
 
-        // 3. Ensure the dropdown visually matches the active language
         const langSelect = document.getElementById("lang-select");
         if (langSelect) langSelect.value = selectedLang;
 
@@ -70,10 +67,9 @@
             return;
           }
 
-          // 4. Critical: Clear cached settings to prevent 'stickiness' of the old language
+          // Clear cache to ensure fresh language load
           localStorage.removeItem("embeddedservice_bootstrap_settings");
           
-          // 5. Apply the language setting
           embeddedservice_bootstrap.settings.language = selectedLang;
           
           embeddedservice_bootstrap.init(
@@ -91,7 +87,6 @@
         }
       }
     </script>
-    
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
