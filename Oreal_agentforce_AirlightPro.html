@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-    <title>Agentforce</title>
+    <title>Agentforce (Français)</title>
     <style>
       body {
         margin: 0;
@@ -26,26 +26,36 @@
   </head>
   <body>
     <main>
-      <p><a href="./">← Home</a></p>
-      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce</h1>
-      <p>The chat bubble should appear in the bottom corner after the page loads.</p>
-      <p id="em-status" style="font-size: 12px; color: #555;">Embedded Messaging status: loading…</p>
+      <p><a href="./">← Accueil</a></p>
+      <h1 style="font-size: 20px; margin: 16px 0;">Agentforce (Test Français)</h1>
+      <p>La bulle de chat devrait apparaître en bas à droite (Mode : <code>fr</code>).</p>
+      <p id="em-status" style="font-size: 12px; color: #555;">Statut : chargement…</p>
     </main>
 
     <script type="text/javascript">
       function setStatus(msg) {
         var el = document.getElementById("em-status");
-        if (el) el.textContent = "Embedded Messaging status: " + msg;
+        if (el) el.textContent = "Statut Embedded Messaging : " + msg;
       }
 
       function initEmbeddedMessaging() {
+        // HARDCODED LANGUAGE SETTING
+        const selectedLang = "fr"; 
+
         try {
           if (typeof embeddedservice_bootstrap === "undefined") {
-            setStatus("bootstrap script loaded, but embeddedservice_bootstrap is missing.");
+            setStatus("Le script bootstrap est chargé mais l'objet est indéfini.");
             return;
           }
 
-          embeddedservice_bootstrap.settings.language = "en_US";
+          // 1. CRITICAL: Clear previous session settings to force French to load
+          // If we don't do this, it might remember your previous English session.
+          localStorage.removeItem("embeddedservice_bootstrap_settings");
+          sessionStorage.removeItem("embeddedservice_bootstrap_settings");
+
+          // 2. Apply Language
+          embeddedservice_bootstrap.settings.language = selectedLang;
+
           embeddedservice_bootstrap.init(
             "00DDT000000Xzto",
             "Airlight_Pro_Agentforce",
@@ -54,9 +64,9 @@
               scrt2URL: "https://lorealusa--cccai.sandbox.my.salesforce-scrt.com",
             }
           );
-          setStatus("initialized.");
+          setStatus("Initialisé en : " + selectedLang);
         } catch (err) {
-          setStatus("init error — open DevTools Console for details.");
+          setStatus("Erreur d'initialisation (voir la console).");
           console.error("Error loading Embedded Messaging: ", err);
         }
       }
@@ -64,12 +74,8 @@
     <script
       type="text/javascript"
       src="https://lorealusa--cccai.sandbox.my.site.com/ESWAirlightProAgentforc1759935699067/assets/js/bootstrap.min.js"
-      onload="setStatus('bootstrap loaded, initializing…'); initEmbeddedMessaging()"
-      onerror="setStatus('failed to load bootstrap.min.js (check network/CSP).')"
+      onload="setStatus('Bootstrap chargé, initialisation…'); initEmbeddedMessaging()"
+      onerror="setStatus('Échec du chargement de bootstrap.min.js')"
     ></script>
   </body>
 </html>
-
-
-
-
