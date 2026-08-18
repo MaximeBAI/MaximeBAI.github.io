@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <title>LO BeaCon Agent</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: #111;
+        background: #fff;
+      }
+      main {
+        max-width: 800px;
+        padding: 48px 20px;
+        margin: 0 auto;
+      }
+      a {
+        color: inherit;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="./">← Accueil</a></p>
+      <h1 style="font-size: 20px; margin: 16px 0;">LO BeaCon Agent</h1>
+      <p>La bulle de chat devrait apparaître en bas à droite.</p>
+      <p id="em-status" style="font-size: 12px; color: #555;">Statut : chargement…</p>
+    </main>
+
+    <script type="text/javascript">
+      function setStatus(msg) {
+        var el = document.getElementById("em-status");
+        if (el) el.textContent = "Statut Embedded Messaging : " + msg;
+      }
+
+    function initEmbeddedMessaging() {
+      try {
+        const languageCode = "fr"; // Or "en_US", dynamically set this variable
+
+        // 1. Set the UI Language (Buttons, Labels)
+        embeddedservice_bootstrap.settings.language = languageCode;
+
+        window.addEventListener("onEmbeddedMessagingReady", () => {
+                console.log("Embedded Messaging is ready. Setting hidden pre-chat fields...");
+
+                embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+                    "CountryCode": "CA",  // Must match the 'Channel Variable Name' in Salesforce exactly
+                    "BrandCode": "LAN"    // Exact brand code
+                });
+            });
+
+            embeddedservice_bootstrap.init(
+                '00DDT000000Xzto',
+                'CCC_Agentforce_WismoV2_LAN_US',
+                'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21786961657419',
+                {
+                    scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
+                }
+            );
+      } catch (err) {
+        setStatus("Erreur d'initialisation (voir la console).");
+        console.error("Error loading Embedded Messaging: ", err);
+      }
+    }
+    </script>
+    <script
+      type="text/javascript"
+      src="https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21786961657419/assets/js/bootstrap.min.js"
+      onload="setStatus('Bootstrap chargé, initialisation…'); initEmbeddedMessaging()"
+      onerror="setStatus('Échec du chargement de bootstrap.min.js')"
+    ></script>
+  </body>
+</html>
