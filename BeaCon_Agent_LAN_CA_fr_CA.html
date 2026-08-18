@@ -37,35 +37,33 @@
         var el = document.getElementById("em-status");
         if (el) el.textContent = "Embedded Messaging Status: " + msg;
       }
-    function initEmbeddedMessaging() {
-      try {
-        const languageCode = "fr_CA"; // Or "en_US", dynamically set this variable
+      window.addEventListener("onEmbeddedMessagingReady", () => {
+        console.log("Embedded Messaging is ready. Setting hidden pre-chat fields...");
 
-        // 1. Set the UI Language (Buttons, Labels)
-        embeddedservice_bootstrap.settings.language = languageCode;
-
-        window.addEventListener("onEmbeddedMessagingReady", () => {
-                console.log("Embedded Messaging is ready. Setting hidden pre-chat fields...");
-
-                embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                    "CountryCode": "US",  // Must match the 'Channel Variable Name' in Salesforce exactly
-                    "BrandCode": "LAN"    // Exact brand code
-                });
-            });
-
-            embeddedservice_bootstrap.init(
-                '00DDT000000Xzto',
-                'CCC_Agentforce_WismoV2_LAN_CA',
-                'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21787058381680',
-                {
-                    scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
-                }
-            );
-        } catch (err) {
-            console.error('Error loading Embedded Messaging: ', err);
-            setStatus("Initialization error (see console).");
-        }
-    };
+        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+            "CountryCode": "US",  // Must match the 'Channel Variable Name' in Salesforce exactly
+            "BrandCode": "LAN"    // Exact brand code
+        });
+      });
+      function initEmbeddedMessaging() {
+        try {
+          const languageCode = "fr_CA"; // Or "en_US", dynamically set this variable
+  
+          // 1. Set the UI Language (Buttons, Labels)
+          embeddedservice_bootstrap.settings.language = languageCode;
+              embeddedservice_bootstrap.init(
+                  '00DDT000000Xzto',
+                  'CCC_Agentforce_WismoV2_LAN_CA',
+                  'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21787058381680',
+                  {
+                      scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
+                  }
+              );
+          } catch (err) {
+              console.error('Error loading Embedded Messaging: ', err);
+              setStatus("Initialization error (see console).");
+          }
+      };
     </script>
     <script
         type='text/javascript'
