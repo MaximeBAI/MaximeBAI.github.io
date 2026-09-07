@@ -42,8 +42,8 @@
               console.log("Embedded Messaging is ready. Setting hidden pre-chat fields...");
 
               embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                  "CountryCode": "CA",  // Must match the 'Channel Variable Name' in Salesforce exactly
-                  "BrandCode": "LAN"    // Exact brand code
+                  "Country_Name": "CA",  // Must match the 'Channel Variable Name' in Salesforce exactly
+                  "Brand_Code": "LAN"    // Exact brand code
               });
           });
       function initEmbeddedMessaging() {
@@ -54,8 +54,8 @@
           embeddedservice_bootstrap.settings.language = languageCode;
             embeddedservice_bootstrap.init(
                 '00DDT000000Xzto',
-                'CCC_Agentforce_WismoV2_LAN_CA',
-                'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21787058381680',
+                'CCC_Agentforce_WismoV2_LegacyUI_LAN_CA',
+                'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforce1788509152321',
                 {
                     scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
                 }
@@ -68,7 +68,7 @@
     </script>
     <script
         type='text/javascript'
-        src='https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforceWismoV21787058381680/assets/js/bootstrap.min.js'          onload="setStatus('Bootstrap loaded, initializing…');
+        src='https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforce1788509152321/assets/js/bootstrap.min.js'          onload="setStatus('Bootstrap loaded, initializing…');
         initEmbeddedMessaging()"
         onerror="setStatus('Failed to load bootstrap.min.js')">
     </script>
