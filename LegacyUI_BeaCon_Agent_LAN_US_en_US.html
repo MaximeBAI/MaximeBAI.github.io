@@ -53,15 +53,17 @@
   
           // 1. Set the UI Language (Buttons, Labels)
           embeddedservice_bootstrap.settings.language = languageCode;
+
+          embeddedservice_bootstrap.settings.widgetPosition = "left";
   
-              embeddedservice_bootstrap.init(
-                  '00DDT000000Xzto',
-                  'CCC_Agentforce_WismoV2_LegacyUI_LAN_US',
-                  'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforce1788784277908',
-                  {
-                      scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
-                  }
-              );
+          embeddedservice_bootstrap.init(
+              '00DDT000000Xzto',
+              'CCC_Agentforce_WismoV2_LegacyUI_LAN_US',
+              'https://lorealusa--cccai.sandbox.my.site.com/ESWCCCAgentforce1788784277908',
+              {
+                  scrt2URL: 'https://lorealusa--cccai.sandbox.my.salesforce-scrt.com'
+              }
+          );
         } catch (err) {
           setStatus("Initialization error (see console).");
           console.error("Error loading Embedded Messaging: ", err);
