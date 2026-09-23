@@ -22,6 +22,12 @@
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       }
+      .embeddedMessagingFrame,
+      .helpButtonEnabled,
+      .embeddedMessagingConversationButton {
+        right: auto !important;
+        left: 20px !important;
+      }
     </style>
   </head>
   <body>
@@ -54,8 +60,6 @@
           // 1. Set the UI Language (Buttons, Labels)
           embeddedservice_bootstrap.settings.language = languageCode;
 
-          embeddedservice_bootstrap.settings.widgetPosition = "left"; 
-  
           embeddedservice_bootstrap.init(
               '00DDT000000Xzto',
               'CCC_Agentforce_WismoV2_LegacyUI_LAN_US',
